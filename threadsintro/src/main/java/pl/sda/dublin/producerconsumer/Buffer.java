@@ -14,9 +14,14 @@ public class Buffer {
     private Object lock = new Object();
 
     public synchronized void insert(int data) {
+        // sprawdzamy, czy mozna wstawic do bufora
+        // petla while po to, aby obudzony wątek jeszcze raz sprawdził początkowy warunek
         while (counter == buffer.length) {
             System.out.println("PRODUCER - Buffer full - going to sleep");
             try {
+                // wywołujemy funkcję wait(), która pochodzi z klasy Object
+                // i jest mechanizmem pozwalającym na wstrzymanie pracy wątku
+                // tak długo, aż inny wątek na tym obiekcie (this) wywoła metodę this.notify() bądź notifyAll();
                 this.wait();
             } catch (InterruptedException e) {
                 e.printStackTrace();
