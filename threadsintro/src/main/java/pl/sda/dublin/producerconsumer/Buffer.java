@@ -17,7 +17,7 @@ public class Buffer {
         while (counter == buffer.length) {
             System.out.println("PRODUCER - Buffer full - going to sleep");
             try {
-                lock.wait();
+                this.wait();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -33,7 +33,7 @@ public class Buffer {
         buffer[producerIndex] = data;
         producerIndex = (producerIndex + 1) % buffer.length;
         counter++;
-        lock.notifyAll();
+        this.notifyAll();
     }
 
 
@@ -41,7 +41,7 @@ public class Buffer {
         while (counter == 0) {
             System.out.println("CONSUMER - Buffer empty - going to sleep");
             try {
-                lock.wait();
+                this.wait();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -50,7 +50,7 @@ public class Buffer {
 
 
         // alternatywny zapis:
-         consumerIndex = (consumerIndex + 1) % buffer.length;
+        consumerIndex = (consumerIndex + 1) % buffer.length;
 //        if (consumerIndex == buffer.length) {
 //            consumerIndex = 0;
 //        } else {
@@ -65,7 +65,7 @@ public class Buffer {
                 + ", counter value: "
                 + counter);
 
-        lock.notifyAll();
+        this.notifyAll();
         return value;
     }
 
