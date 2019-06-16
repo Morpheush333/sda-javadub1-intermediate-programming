@@ -1,8 +1,16 @@
 package pl.sda.dublin.producerconsumer;
 
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 // cykliczny bufor, w którym producent będzie umieszczał dane
 // a konsument pobierał dane
 public class Buffer {
+
+
+    Lock lock = new ReentrantLock();
+    Condition condition = lock.newCondition();
 
     private int[] buffer = new int[10];
     private int producerIndex = 0;
@@ -10,10 +18,9 @@ public class Buffer {
     //counter - zmienna do wykrywania, czy bufor pusty, czy pełny
     private int counter = 0;
 
-    // obiekt wykorzystany jako zamek
-    private Object lock = new Object();
 
-    public synchronized void insert(int data) {
+    public void insert(int data) {
+        lock.lock();
         // sprawdzamy, czy mozna wstawic do bufora
         // petla while po to, aby obudzony wątek jeszcze raz sprawdził początkowy warunek
         while (counter == buffer.length) {
@@ -22,7 +29,8 @@ public class Buffer {
                 // wywołujemy funkcję wait(), która pochodzi z klasy Object
                 // i jest mechanizmem pozwalającym na wstrzymanie pracy wątku
                 // tak długo, aż inny wątek na tym obiekcie (this) wywoła metodę this.notify() bądź notifyAll();
-                this.wait();
+                condition.await();
+
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -38,15 +46,18 @@ public class Buffer {
         buffer[producerIndex] = data;
         producerIndex = (producerIndex + 1) % buffer.length;
         counter++;
-        this.notifyAll();
+
+        condition.signalAll();
+        lock.unlock();
     }
 
 
-    public synchronized int getData() {
+    public int getData() {
+        lock.lock();
         while (counter == 0) {
             System.out.println("CONSUMER - Buffer empty - going to sleep");
             try {
-                this.wait();
+                condition.await();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -70,7 +81,8 @@ public class Buffer {
                 + ", counter value: "
                 + counter);
 
-        this.notifyAll();
+        condition.signalAll();
+        lock.unlock();
         return value;
     }
 
