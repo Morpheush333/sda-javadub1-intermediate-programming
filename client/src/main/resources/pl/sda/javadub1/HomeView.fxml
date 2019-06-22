@@ -6,14 +6,13 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
 <VBox fx:id="stage" alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="pl.sda.javadub1.PrimaryController">
+      fx:controller="pl.sda.javadub1.HomeController">
     <children>
         <Label fx:id="welcomeLabel" text="Moja aplikacja"/>
         <Button fx:id="primaryButton" onAction="#switchToSecondary" text="Przełącz na drugi widok"/>
 
+        <Button text="Polacz z serwerem" onAction="#onClick"/>
 
-        <Button text="Kliknij mnie!" onAction="#onClick"/>
-        <Button text="Kliknij mnie!" onAction="#onClick"/>
     </children>
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
