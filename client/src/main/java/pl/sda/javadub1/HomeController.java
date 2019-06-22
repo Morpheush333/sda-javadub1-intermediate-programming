@@ -3,6 +3,7 @@ package pl.sda.javadub1;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import pl.sda.dublin.MessagingService;
 
@@ -18,7 +19,7 @@ public class HomeController {
     public Label welcomeLabel;
 
     @FXML
-    VBox stage;
+    BorderPane stage;
 
     @FXML
     private void switchToSecondary() throws IOException {
