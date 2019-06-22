@@ -49,7 +49,7 @@ public class Server {
 
 
     public void acceptConnections() throws IOException {
-        System.out.println("Oczekuje na polaczenie...");
+        System.out.println("Oczekuje na polaczenie na adresie: " + serverSocket.getLocalSocketAddress().toString());
         Socket clientSocket = serverSocket.accept();
 
         System.out.println("Klient sie podlaczyl: ");
@@ -58,8 +58,13 @@ public class Server {
         System.out.println("Address: " + clientSocket.getInetAddress().toString());
 
 
-        PrintWriter writer = new PrintWriter(clientSocket.getOutputStream());
         BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        System.out.println(reader.readLine());
+
+        PrintWriter writer = new PrintWriter(clientSocket.getOutputStream());
+        writer.write("Hello from server\n");
+        writer.flush();
+        System.out.println("--------------------------------------------\n\n");
     }
 
 }

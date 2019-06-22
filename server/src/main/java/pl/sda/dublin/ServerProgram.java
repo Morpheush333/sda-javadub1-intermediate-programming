@@ -6,6 +6,8 @@ public class ServerProgram {
 
     public static void main(String[] args) throws IOException {
         Server mojServer = new Server();
-        mojServer.acceptConnections();
+        while (true) {
+            mojServer.acceptConnections();
+        }
     }
 }
