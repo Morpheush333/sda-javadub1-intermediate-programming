@@ -12,6 +12,7 @@
         <module>wordcounter</module>
         <module>threadsintro</module>
         <module>client</module>
+        <module>server</module>
     </modules>
 
 
