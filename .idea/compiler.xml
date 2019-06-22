@@ -9,6 +9,7 @@
         <module name="threadsintro" />
         <module name="server" />
         <module name="client" />
+        <module name="common" />
         <module name="wordcounter" />
       </profile>
     </annotationProcessing>

@@ -4,15 +4,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import pl.sda.dublin.MessagingService;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
 public class HomeController {
+
+    private MessagingService messagingService;
 
     @FXML
     public Label welcomeLabel;
@@ -35,20 +35,17 @@ public class HomeController {
         try {
             socket.connect(new InetSocketAddress(address, port));
 
-            PrintWriter writer = new PrintWriter(socket.getOutputStream());
-            writer.write("Hello server\n");
-            writer.flush();
-
-            try {
-                Thread.sleep(10000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            messagingService = new MessagingService(socket);
+            messagingService.sendObject("Hello-world");
+            String response = (String) messagingService.readObject();
+            System.out.println(response);
 
 //            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 //            System.out.println("Wiadomosc od serwera: " + reader.readLine());
         } catch (IOException e) {
             // TODO: 22.06.19 #1 wyswietl okno z informacja o bledzie polaczenia
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
