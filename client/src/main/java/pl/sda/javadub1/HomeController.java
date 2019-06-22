@@ -34,13 +34,19 @@ public class HomeController {
         Socket socket = new Socket();
         try {
             socket.connect(new InetSocketAddress(address, port));
+
             PrintWriter writer = new PrintWriter(socket.getOutputStream());
             writer.write("Hello server\n");
             writer.flush();
 
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            System.out.println("Wiadomosc od serwera: " + reader.readLine());
+//            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+//            System.out.println("Wiadomosc od serwera: " + reader.readLine());
         } catch (IOException e) {
             // TODO: 22.06.19 #1 wyswietl okno z informacja o bledzie polaczenia
             e.printStackTrace();

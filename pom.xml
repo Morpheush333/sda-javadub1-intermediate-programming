@@ -13,6 +13,7 @@
         <module>threadsintro</module>
         <module>client</module>
         <module>server</module>
+        <module>common</module>
     </modules>
 
 

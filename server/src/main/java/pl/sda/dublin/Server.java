@@ -61,9 +61,9 @@ public class Server {
         BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
         System.out.println(reader.readLine());
 
-        PrintWriter writer = new PrintWriter(clientSocket.getOutputStream());
-        writer.write("Hello from server\n");
-        writer.flush();
+//        PrintWriter writer = new PrintWriter(clientSocket.getOutputStream());
+//        writer.write("Hello from server\n");
+//        writer.flush();
         System.out.println("--------------------------------------------\n\n");
     }
 
