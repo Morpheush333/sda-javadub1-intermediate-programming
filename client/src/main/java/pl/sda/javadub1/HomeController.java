@@ -39,9 +39,6 @@ public class HomeController {
             messagingService.sendObject("Hello-world");
             String response = (String) messagingService.readObject();
             System.out.println(response);
-
-//            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-//            System.out.println("Wiadomosc od serwera: " + reader.readLine());
         } catch (IOException e) {
             // TODO: 22.06.19 #1 wyswietl okno z informacja o bledzie polaczenia
             e.printStackTrace();
