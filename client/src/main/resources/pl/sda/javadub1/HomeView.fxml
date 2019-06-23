@@ -65,11 +65,11 @@
         </VBox>
     </center>
 
-    <left>
-        <ListView>
+<!--    <left>-->
+<!--        <ListView>-->
 
-        </ListView>
-    </left>
+<!--        </ListView>-->
+<!--    </left>-->
 
 
 </BorderPane>

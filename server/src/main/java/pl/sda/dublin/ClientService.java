@@ -8,10 +8,12 @@ import static java.util.Objects.requireNonNull;
 public class ClientService {
     private Socket socket;
     private MessagingService messagingService;
+    private Conversation conversation;
 
-    public ClientService(Socket socket) {
+    public ClientService(Socket socket, Conversation conversation) {
         this.socket = requireNonNull(socket);
         messagingService = new MessagingService(socket);
+        this.conversation = conversation;
     }
 
     public void handleCommunication() {
@@ -23,8 +25,13 @@ public class ClientService {
                 if (msg instanceof String) {
                     String message = (String) msg;
                     System.out.println("Otrzymałem wiadomość: " + message);
+                    ClientService otherClient = conversation.getOtherClient(this);
+                    // jesli tylko 1 klient sie polaczy i nie ma drugiego, to nie mamy gdzie wyslac wiadomosci
+                    if (otherClient != null) {
+                        // jesli jest drugi klient to wysylamy do niego wiadomosc
+                        otherClient.messagingService.sendObject(message);
+                    }
 
-                    messagingService.sendObject("OKEJ");
                 } else {
                     System.out.println("Nie zrozumiały format wiadomości");
                 }

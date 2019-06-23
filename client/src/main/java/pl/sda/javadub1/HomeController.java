@@ -55,7 +55,7 @@ public class HomeController {
                         Object response = messagingService.readObject();
                         // doklejamy odpowiedź do głownego tekstu czatu
                         Platform.runLater(() -> {
-                            messageTextArea.setText(messageTextArea.getText() + "\n" + response.toString());
+                            messageTextArea.setText(messageTextArea.getText() + "\n" + "klient:" + response.toString());
                         });
                     } catch (IOException | ClassNotFoundException e) {
                         e.printStackTrace();
@@ -79,6 +79,7 @@ public class HomeController {
         StringBuilder builder = new StringBuilder();
         String fullMessage = builder.append(messageTextArea.getText()) // pobierz aktualny tekst z kontrolki
                 .append("\n") // dodaj nowa linie
+                .append("Ja: ") // oznacza nasza wiadomosc
                 .append(newMessageTextField.getText()) // dodaj nowy tekst
                 .toString();
 
