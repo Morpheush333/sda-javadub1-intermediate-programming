@@ -23,6 +23,8 @@ public class ClientService {
                 if (msg instanceof String) {
                     String message = (String) msg;
                     System.out.println("Otrzymałem wiadomość: " + message);
+
+                    messagingService.sendObject("OKEJ");
                 } else {
                     System.out.println("Nie zrozumiały format wiadomości");
                 }
