@@ -12,6 +12,7 @@ public class Server {
     private final static int SERVER_PORT = 5000;
     private final static int MAX_SERVER_CONNECTIONS = 10;
     private MessagingService messagingService;
+    private Conversation conversation = new Conversation();
 
     /**
      * Tworzy domyslne gniazdo serwera - do dzialania w trybie developerskim na wlasnej maszynie
@@ -69,7 +70,12 @@ public class Server {
                 System.out.println("Address: " + clientSocket.getInetAddress().toString());
 
                 Thread clientThread = new Thread(() -> {
-                    ClientService clientService = new ClientService(clientSocket);
+                    ClientService clientService = new ClientService(clientSocket, conversation);
+                    if (conversation.getFirstClient() == null) {
+                        conversation.setFirstClient(clientService);
+                    } else {
+                        conversation.setSecondClient(clientService);
+                    }
                     clientService.handleCommunication();
                 });
                 clientThread.start();

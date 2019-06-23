@@ -1,5 +1,6 @@
 package pl.sda.javadub1;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -45,6 +46,27 @@ public class HomeController {
             socket.connect(new InetSocketAddress(address, port));
             messagingService = new MessagingService(socket);
             sendMessageButton.setDisable(false);
+
+            Thread t = new Thread(() -> {
+                try {
+                    while (true){
+                        Object o = messagingService.readObject();
+
+                        System.out.println("Dostałem wiadomość: " + o.toString());
+
+                        Platform.runLater(() -> {
+                            this.messageTextArea.setText(messageTextArea.getText() + "\n" + o.toString());
+                        });
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+            });
+            t.start();
 //            messagingService.sendObject("Hello-world");
 //            String response = (String) messagingService.readObject();
 //            System.out.println(response);
