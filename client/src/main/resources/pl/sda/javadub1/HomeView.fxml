@@ -32,13 +32,14 @@
     </top>
 
     <center>
-
         <VBox>
             <children>
-                <TextArea disable="true"> </TextArea>
-                <TextField></TextField>
+                <TextArea fx:id="messageTextArea" editable="false" />
 
-                <Button text="Wyślij wiadomość">
+
+                <TextField fx:id="newMessageTextField"/>
+
+                <Button text="Wyślij wiadomość" onAction="#onMessageSent" >
                     <VBox.margin>
                         <Insets bottom="20.0" top="20.0"/>
                     </VBox.margin>
@@ -63,7 +64,6 @@
                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
             </padding>
         </VBox>
-
     </center>
 
     <left>

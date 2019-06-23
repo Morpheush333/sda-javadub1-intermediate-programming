@@ -3,8 +3,9 @@ package pl.sda.javadub1;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 import pl.sda.dublin.MessagingService;
 
 import java.io.IOException;
@@ -12,6 +13,10 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 
 public class HomeController {
+
+    public TextArea messageTextArea;
+
+    public TextField newMessageTextField;
 
     private MessagingService messagingService;
 
@@ -49,4 +54,14 @@ public class HomeController {
     }
 
 
+    public void onMessageSent(ActionEvent actionEvent) {
+        StringBuilder builder = new StringBuilder();
+        String fullMessage = builder.append(messageTextArea.getText()) // pobierz aktualny tekst z kontrolki
+                .append("\n") // dodaj nowa linie
+                .append(newMessageTextField.getText()) // dodaj nowy tekst
+                .toString();
+
+        messageTextArea.setText(fullMessage);
+        newMessageTextField.clear();
+    }
 }
