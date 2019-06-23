@@ -2,6 +2,7 @@ package pl.sda.javadub1;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -17,6 +18,7 @@ public class HomeController {
     public TextArea messageTextArea;
 
     public TextField newMessageTextField;
+    public Button sendMessageButton;
 
     private MessagingService messagingService;
 
@@ -31,6 +33,7 @@ public class HomeController {
         App.setRoot("secondary");
     }
 
+    // metoda wywolana w momencie klikniecia "polacz z serwerem"
     public void onClick(ActionEvent actionEvent) {
         System.out.println("Nawiazuje polaczenie z serwerem... ");
 
@@ -40,21 +43,20 @@ public class HomeController {
         Socket socket = new Socket();
         try {
             socket.connect(new InetSocketAddress(address, port));
-
             messagingService = new MessagingService(socket);
-            messagingService.sendObject("Hello-world");
-            String response = (String) messagingService.readObject();
-            System.out.println(response);
+            sendMessageButton.setDisable(false);
+//            messagingService.sendObject("Hello-world");
+//            String response = (String) messagingService.readObject();
+//            System.out.println(response);
         } catch (IOException e) {
             // TODO: 22.06.19 #1 wyswietl okno z informacja o bledzie polaczenia
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            System.out.println("Nie udalo sie polaczyc z serwerem " + e.getMessage());
         }
     }
 
 
-    public void onMessageSent(ActionEvent actionEvent) {
+    public void onMessageSent(ActionEvent actionEvent) throws IOException {
+        String newMessage = newMessageTextField.getText();
         StringBuilder builder = new StringBuilder();
         String fullMessage = builder.append(messageTextArea.getText()) // pobierz aktualny tekst z kontrolki
                 .append("\n") // dodaj nowa linie
@@ -62,6 +64,9 @@ public class HomeController {
                 .toString();
 
         messageTextArea.setText(fullMessage);
+        System.out.println("Wysylam wiadomosc do serwera... " + newMessage);
         newMessageTextField.clear();
+        messagingService.sendObject(newMessage);
+
     }
 }
