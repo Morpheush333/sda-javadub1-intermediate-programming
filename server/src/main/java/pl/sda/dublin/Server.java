@@ -46,31 +46,41 @@ public class Server {
     }
 
 
+    // głowna metoda serwera
+    // jej zadaniem jest zaakceptowanie połączenia
+    // i utworznie dla kazdego nowego klienta nowego wątku
+    // z każdym klientem związany jest ClientService - opakowanie dla obsługi zdarzeń w kliencie
     public void acceptConnections() {
         try {
             System.out.println("Oczekuje na polaczenie na adresie: " + serverSocket.getLocalSocketAddress().toString());
-            Socket clientSocket = serverSocket.accept();
 
-            System.out.println("Klient sie podlaczyl: ");
-            System.out.println("Port: " + clientSocket.getPort());
-            System.out.println("LocalPort : " + clientSocket.getLocalPort());
-            System.out.println("Address: " + clientSocket.getInetAddress().toString());
+            while (true) {
+                Socket clientSocket = serverSocket.accept();
 
-            messagingService = new MessagingService(clientSocket);
+                // jesli max liczba polaczen przekroczona to zwrocony zostanie null
+                if (clientSocket == null) {
+                    System.out.println("Client socket is null... Koniec nasluchiwania");
+                    break;
+                }
 
-            Object message = messagingService.readObject();
-            System.out.println("Odebralem wiadomosc: " + message.toString());
+                System.out.println("Klient sie podlaczyl: ");
+                System.out.println("Port: " + clientSocket.getPort());
+                System.out.println("LocalPort : " + clientSocket.getLocalPort());
+                System.out.println("Address: " + clientSocket.getInetAddress().toString());
 
-            Object responseMessage = "Hello from server";
-            messagingService.sendObject(responseMessage);
+                Thread clientThread = new Thread(() -> {
+                    ClientService clientService = new ClientService(clientSocket);
+                    clientService.handleCommunication();
+                });
+                clientThread.start();
 
-        } catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
+                System.out.println("--------------------------------------------\n\n");
+            }
         } catch (IOException ex) {
             ex.printStackTrace();
         }
 
-        System.out.println("--------------------------------------------\n\n");
+
     }
 
 }
